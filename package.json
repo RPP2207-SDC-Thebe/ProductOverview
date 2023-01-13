@@ -1,0 +1,22 @@
+{
+  "name": "productoverview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RPP2207-SDC-Thebe/ProductOverview.git"
+  },
+  "author": "Jacinthe Chong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RPP2207-SDC-Thebe/ProductOverview/issues"
+  },
+  "homepage": "https://github.com/RPP2207-SDC-Thebe/ProductOverview#readme",
+  "devDependencies": {
+    "jest": "^29.3.1"
+  }
+}
