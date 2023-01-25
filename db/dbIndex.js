@@ -18,7 +18,7 @@ db
     category varchar(50),
     default_price varchar(20)
   );`)
-  .then(() => {console.log('TABLE "products" created')})
+  .then(() => {/*console.log('TABLE "products" created')*/})
   .catch((err) => {console.log(err)})
 
 db
@@ -83,3 +83,24 @@ db
 // CREATE INDEX style_product_id_index ON styles (product_id);
 // CREATE INDEX sku_id_index ON skus (sku_id);
 // CREATE INDEX sku_style_id_index ON skus (style_id);
+
+const dbGetProducts = (productId) => {
+  return db.query(
+    `SELECT json_build_object(
+      'id', ${productId},
+      'name', name,
+      'slogan', slogan,
+      'description', description,
+      'category', category,
+      'default_price', default_price,
+      'features', json_agg(
+        json_build_object(
+          'feature', feature,
+          'value', value))) as product_info FROM products JOIN features ON products.product_id = features.product_id WHERE products.product_id = ${productId} GROUP BY products.product_id;`
+  )
+  .then((result) => {
+    return result;
+  })
+};
+
+module.exports.dbGetProducts = dbGetProducts;
