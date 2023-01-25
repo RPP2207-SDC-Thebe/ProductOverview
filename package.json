@@ -2,7 +2,7 @@
   "name": "productoverview",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/index.js",
   "scripts": {
     "test": "jest",
     "server-dev": "npx nodemon --watch server index.js"
