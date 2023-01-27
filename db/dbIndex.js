@@ -84,7 +84,11 @@ db
 // CREATE INDEX sku_id_index ON skus (sku_id);
 // CREATE INDEX sku_style_id_index ON skus (style_id);
 
-const dbGetProducts = (productId) => {
+const dbGetProducts = () => {
+
+};
+
+const dbGetProductInfo = (productId) => {
   return db.query(
     `SELECT json_build_object(
       'id', ${productId},
@@ -101,6 +105,50 @@ const dbGetProducts = (productId) => {
   .then((result) => {
     return result;
   })
+  //catch statement
+};
+
+const dbGetStyles = (productId) => {
+  return db.query(
+    `SELECT json_build_object(
+      'product_id', ${productId},
+      'results', json_agg(
+        json_build_object(
+          'style_id', styles.style_id,
+          'name', name,
+          'sale_price', sale_price,
+          'default?', default_style,
+          'photos', (SELECT json_agg(json_build_object(
+              'thumbnail_url', thumbnail,
+              'url', url
+            )) FROM photos WHERE style_id = styles.style_id),
+          'skus', (SELECT json_object_agg(
+            sku_id, json_build_object(
+              'quantity', quantity,
+              'size', size)) FROM skus WHERE style_id = 1)
+
+          )
+          )
+        ) as styles_info FROM styles WHERE styles.product_id = ${productId};`
+  )
+  .then((result) => {
+    return result;
+  })
+  //catch statement
+};
+
+const dbGetRelatedProducts = () => {
+
+};
+
+const dbGetCart = () => {
+
+};
+
+const dbAddToCart = () => {
+
 };
 
 module.exports.dbGetProducts = dbGetProducts;
+module.exports.dbGetProductInfo = dbGetProductInfo;
+module.exports.dbGetStyles = dbGetStyles;

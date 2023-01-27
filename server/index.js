@@ -15,9 +15,9 @@ app.get('/products', route.getProducts);
 //GET/products/:product_id
 app.get('/products/:product_id', route.getProductInfo);
 //GET/products/:product_id/styles (includes photos and skus)
-app.get('products/:product_id/styles', route.getStyles);
+app.get('/products/:product_id/styles', route.getStyles);
 //GET/products/:product_id/related
-app.get('product/:product_id/related', route.getRelatedProducts);
+app.get('/product/:product_id/related', route.getRelatedProducts);
 
 
 //Cart routes
