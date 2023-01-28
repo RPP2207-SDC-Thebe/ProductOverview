@@ -85,7 +85,12 @@ db
 // CREATE INDEX sku_style_id_index ON skus (style_id);
 
 const dbGetProducts = () => {
-
+  return db.query(
+    `SELECT product_id as id, name, slogan, description, category, default_price FROM products LIMIT 5 OFFSET 0;`
+  )
+  .then((result) => {
+    return result.rows;
+  })
 };
 
 const dbGetProductInfo = (productId) => {
@@ -100,10 +105,12 @@ const dbGetProductInfo = (productId) => {
       'features', json_agg(
         json_build_object(
           'feature', feature,
-          'value', value))) as product_info FROM products JOIN features ON products.product_id = features.product_id WHERE products.product_id = ${productId} GROUP BY products.product_id;`
+          'value', value)
+        )
+      ) as product_info FROM products JOIN features ON products.product_id = features.product_id WHERE products.product_id = ${productId} GROUP BY products.product_id;`
   )
   .then((result) => {
-    return result;
+    return result.rows[0].product_info;
   })
   //catch statement
 };
@@ -117,7 +124,7 @@ const dbGetStyles = (productId) => {
           'style_id', styles.style_id,
           'name', name,
           'sale_price', sale_price,
-          'default?', default_style,
+          'default?', (SELECT CAST (default_style AS BOOLEAN)),
           'photos', (SELECT json_agg(json_build_object(
               'thumbnail_url', thumbnail,
               'url', url
@@ -125,20 +132,24 @@ const dbGetStyles = (productId) => {
           'skus', (SELECT json_object_agg(
             sku_id, json_build_object(
               'quantity', quantity,
-              'size', size)) FROM skus WHERE style_id = 1)
-
+              'size', size)) FROM skus WHERE style_id = styles.style_id)
           )
           )
         ) as styles_info FROM styles WHERE styles.product_id = ${productId};`
   )
   .then((result) => {
-    return result;
+    return result.rows[0].styles_info;
   })
   //catch statement
 };
 
-const dbGetRelatedProducts = () => {
-
+const dbGetRelatedProducts = (productId) => {
+  return db.query(
+    `SELECT json_agg(related_product_id) as related_products FROM related WHERE currentproduct_id = ${productId};`
+  )
+  .then((result) => {
+    return result.rows[0].related_products;
+  })
 };
 
 const dbGetCart = () => {
@@ -152,3 +163,4 @@ const dbAddToCart = () => {
 module.exports.dbGetProducts = dbGetProducts;
 module.exports.dbGetProductInfo = dbGetProductInfo;
 module.exports.dbGetStyles = dbGetStyles;
+module.exports.dbGetRelatedProducts = dbGetRelatedProducts;

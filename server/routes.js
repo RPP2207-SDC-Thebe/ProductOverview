@@ -1,17 +1,23 @@
 const db = require('../db/dbIndex.js');
-// const dbGetProducts = require('../db/dbIndex.js').dbGetProducts;
-// const dbGetProductInfo = require('../db/dbIndex.js').dbGetProductInfo;
-// const dbGetStyles = require('../db/dbIndex.js').dbGetStyles;
+
+//handle errors properly
 
 module.exports = {
   getProducts: (req, res) => {
     console.log('get products');
+    db.dbGetProducts()
+    .then((result) => {
+      res.send(result);
+    })
   },
   getProductInfo: (req, res) => {
     console.log('get product info');
     db.dbGetProductInfo(req.params.product_id)
     .then((result) => {
-      res.send(result.rows[0].product_info);
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
     })
   },
   getStyles: (req, res) => {
@@ -26,6 +32,13 @@ module.exports = {
   },
   getRelatedProducts: (req, res) => {
     console.log('get related products');
+    db.dbGetRelatedProducts(req.params.product_id)
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   },
   getCart: (req, res) => {
     console.log('get cart');
