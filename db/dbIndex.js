@@ -72,6 +72,16 @@ db
 .then(() => {/*console.log('TABLE "related" created')*/})
 .catch((err) => {console.log(err)})
 
+db
+.query(`CREATE TABLE IF NOT EXISTS cart (
+  id SERIAL PRIMARY KEY,
+  user_session varchar,
+  sku_id integer,
+  count integer
+);`)
+.then(() => {/*console.log('TABLE "cart" created')*/})
+.catch((err) => {console.log(err)})
+
 //Indexing
 
 // CREATE INDEX feature_id_index ON features (feature_id);
@@ -156,11 +166,17 @@ const dbGetCart = () => {
 
 };
 
-const dbAddToCart = () => {
-
+const dbAddToCart = (sessionID, sku_id, count) => {
+  return db.query(
+    `INSERT INTO cart (user_session, sku_id, count) VALUES ('${sessionID}', ${sku_id}, ${count});`
+  )
+  // .then((result) => {
+  //   return result;
+  // })
 };
 
 module.exports.dbGetProducts = dbGetProducts;
 module.exports.dbGetProductInfo = dbGetProductInfo;
 module.exports.dbGetStyles = dbGetStyles;
 module.exports.dbGetRelatedProducts = dbGetRelatedProducts;
+module.exports.dbAddToCart = dbAddToCart;

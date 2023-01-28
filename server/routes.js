@@ -4,14 +4,12 @@ const db = require('../db/dbIndex.js');
 
 module.exports = {
   getProducts: (req, res) => {
-    console.log('get products');
     db.dbGetProducts()
     .then((result) => {
       res.send(result);
     })
   },
   getProductInfo: (req, res) => {
-    console.log('get product info');
     db.dbGetProductInfo(req.params.product_id)
     .then((result) => {
       res.send(result);
@@ -21,7 +19,6 @@ module.exports = {
     })
   },
   getStyles: (req, res) => {
-    console.log('get styles');
     db.dbGetStyles(req.params.product_id)
     .then((result) => {
       res.send(result);
@@ -31,7 +28,6 @@ module.exports = {
     })
   },
   getRelatedProducts: (req, res) => {
-    console.log('get related products');
     db.dbGetRelatedProducts(req.params.product_id)
     .then((result) => {
       res.send(result);
@@ -42,8 +38,19 @@ module.exports = {
   },
   getCart: (req, res) => {
     console.log('get cart');
+
   },
   postCart: (req, res) => {
     console.log('post cart');
+    let session = req.sessionID;
+    let skuID = req.body.sku_id;
+    let count = req.body.count;
+    db.dbAddToCart(session, skuID, count)
+    .then(() => {
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 }
