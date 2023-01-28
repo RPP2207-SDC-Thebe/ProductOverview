@@ -101,6 +101,9 @@ const dbGetProducts = () => {
   .then((result) => {
     return result.rows;
   })
+  .catch((err) => {
+    return err;
+  })
 };
 
 const dbGetProductInfo = (productId) => {
@@ -122,7 +125,9 @@ const dbGetProductInfo = (productId) => {
   .then((result) => {
     return result.rows[0].product_info;
   })
-  //catch statement
+  .catch((err) => {
+    return err;
+  })
 };
 
 const dbGetStyles = (productId) => {
@@ -150,7 +155,9 @@ const dbGetStyles = (productId) => {
   .then((result) => {
     return result.rows[0].styles_info;
   })
-  //catch statement
+  .catch((err) => {
+    return err;
+  })
 };
 
 const dbGetRelatedProducts = (productId) => {
@@ -159,6 +166,9 @@ const dbGetRelatedProducts = (productId) => {
   )
   .then((result) => {
     return result.rows[0].related_products;
+  })
+  .catch((err) => {
+    return err;
   })
 };
 
@@ -169,6 +179,9 @@ const dbGetCart = (sessionID) => {
   .then((result) => {
     return result.rows;
   })
+  .catch((err) => {
+    return err;
+  })
 };
 
 const dbAddToCart = (sessionID, sku_id, count) => {
@@ -177,6 +190,9 @@ const dbAddToCart = (sessionID, sku_id, count) => {
   )
   .then((result) => {
     return result;
+  })
+  .catch((err) => {
+    return err;
   })
 };
 
