@@ -138,7 +138,8 @@ const dbGetStyles = (productId) => {
         json_build_object(
           'style_id', styles.style_id,
           'name', name,
-          'sale_price', sale_price,
+          'original_price', original_price,
+          'sale_price', (SELECT CASE WHEN sale_price='null' THEN '0' ELSE sale_price END),
           'default?', (SELECT CAST (default_style AS BOOLEAN)),
           'photos', (SELECT json_agg(json_build_object(
               'thumbnail_url', thumbnail,
