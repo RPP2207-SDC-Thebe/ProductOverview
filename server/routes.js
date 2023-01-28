@@ -37,11 +37,13 @@ module.exports = {
     })
   },
   getCart: (req, res) => {
-    console.log('get cart');
+    db.dbGetCart(req.sessionID)
+    .then((result) => {
+      res.send(result);
+    })
 
   },
   postCart: (req, res) => {
-    console.log('post cart');
     let session = req.sessionID;
     let skuID = req.body.sku_id;
     let count = req.body.count;

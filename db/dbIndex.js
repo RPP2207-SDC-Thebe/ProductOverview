@@ -162,17 +162,22 @@ const dbGetRelatedProducts = (productId) => {
   })
 };
 
-const dbGetCart = () => {
-
+const dbGetCart = (sessionID) => {
+  return db.query(
+    `SELECT sku_id, count FROM cart WHERE user_session = '${sessionID}';`
+  )
+  .then((result) => {
+    return result.rows;
+  })
 };
 
 const dbAddToCart = (sessionID, sku_id, count) => {
   return db.query(
     `INSERT INTO cart (user_session, sku_id, count) VALUES ('${sessionID}', ${sku_id}, ${count});`
   )
-  // .then((result) => {
-  //   return result;
-  // })
+  .then((result) => {
+    return result;
+  })
 };
 
 module.exports.dbGetProducts = dbGetProducts;
@@ -180,3 +185,4 @@ module.exports.dbGetProductInfo = dbGetProductInfo;
 module.exports.dbGetStyles = dbGetStyles;
 module.exports.dbGetRelatedProducts = dbGetRelatedProducts;
 module.exports.dbAddToCart = dbAddToCart;
+module.exports.dbGetCart = dbGetCart;
