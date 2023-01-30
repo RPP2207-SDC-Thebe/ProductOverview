@@ -7,7 +7,7 @@ const db = new Pool({
 db
   .connect()
   .then(() => {console.log('Connected')})
-  .catch((err) => {console.log(err)})
+  .catch((err) => {throw err})
 
 db
   .query(`CREATE TABLE IF NOT EXISTS products (
@@ -19,7 +19,7 @@ db
     default_price varchar(20)
   );`)
   .then(() => {/*console.log('TABLE "products" created')*/})
-  .catch((err) => {console.log(err)})
+  .catch((err) => {throw err})
 
 db
 .query(`CREATE TABLE IF NOT EXISTS styles (
@@ -31,7 +31,7 @@ db
   default_style integer
 );`)
 .then(() => {/*console.log('TABLE "styles" created')*/})
-.catch((err) => {console.log(err)})
+.catch((err) => {throw err})
 
 db
 .query(`CREATE TABLE IF NOT EXISTS skus (
@@ -41,7 +41,7 @@ db
   quantity integer
 );`)
 .then(() => {/*console.log('TABLE "skus" created')*/})
-.catch((err) => {console.log(err)})
+.catch((err) => {throw err})
 
 db
 .query(`CREATE TABLE IF NOT EXISTS features (
@@ -51,7 +51,7 @@ db
   value varchar(100)
 );`)
 .then(() => {/*console.log('TABLE "features" created')*/})
-.catch((err) => {console.log(err)})
+.catch((err) => {throw err})
 
 db
 .query(`CREATE TABLE IF NOT EXISTS photos (
@@ -61,7 +61,7 @@ db
   thumbnail varchar
 );`)
 .then(() => {/*console.log('TABLE "photos" created')*/})
-.catch((err) => {console.log(err)})
+.catch((err) => {throw err})
 
 db
 .query(`CREATE TABLE IF NOT EXISTS related (
@@ -70,7 +70,7 @@ db
   related_product_id integer
 );`)
 .then(() => {/*console.log('TABLE "related" created')*/})
-.catch((err) => {console.log(err)})
+.catch((err) => {throw err})
 
 db
 .query(`CREATE TABLE IF NOT EXISTS cart (
@@ -80,7 +80,7 @@ db
   count integer
 );`)
 .then(() => {/*console.log('TABLE "cart" created')*/})
-.catch((err) => {console.log(err)})
+.catch((err) => {throw err})
 
 //Indexing
 
@@ -102,7 +102,7 @@ const dbGetProducts = () => {
     return result.rows;
   })
   .catch((err) => {
-    return err;
+    throw err;
   })
 };
 
@@ -126,20 +126,20 @@ const dbGetProductInfo = (productId) => {
     return result.rows[0].product_info;
   })
   .catch((err) => {
-    return err;
+    throw err;
   })
 };
 
 const dbGetStyles = (productId) => {
   return db.query(
     `SELECT json_build_object(
-      'product_id', ${productId},
+      'product_id', (SELECT product_id FROM products WHERE product_id = ${productId}),
       'results', json_agg(
         json_build_object(
           'style_id', styles.style_id,
           'name', name,
           'original_price', original_price,
-          'sale_price', (SELECT CASE WHEN sale_price='null' THEN '0' ELSE sale_price END),
+          'sale_price', (SELECT NULLIF(sale_price, 'null')),
           'default?', (SELECT CAST (default_style AS BOOLEAN)),
           'photos', (SELECT json_agg(json_build_object(
               'thumbnail_url', thumbnail,
@@ -157,7 +157,7 @@ const dbGetStyles = (productId) => {
     return result.rows[0].styles_info;
   })
   .catch((err) => {
-    return err;
+    throw err;
   })
 };
 
@@ -169,7 +169,7 @@ const dbGetRelatedProducts = (productId) => {
     return result.rows[0].related_products;
   })
   .catch((err) => {
-    return err;
+    throw err;
   })
 };
 
@@ -181,7 +181,7 @@ const dbGetCart = (sessionID) => {
     return result.rows;
   })
   .catch((err) => {
-    return err;
+    throw err;
   })
 };
 
@@ -193,10 +193,11 @@ const dbAddToCart = (sessionID, sku_id, count) => {
     return result;
   })
   .catch((err) => {
-    return err;
+    throw err;
   })
 };
 
+module.exports.db = db;
 module.exports.dbGetProducts = dbGetProducts;
 module.exports.dbGetProductInfo = dbGetProductInfo;
 module.exports.dbGetStyles = dbGetStyles;
