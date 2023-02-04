@@ -84,15 +84,13 @@ db
 
 //Indexing
 
-// CREATE INDEX feature_id_index ON features (feature_id);
+
 // CREATE INDEX feature_product_id_index ON features (product_id);
-// CREATE INDEX photo_id_index ON photos (photo_id);
 // CREATE INDEX photo_style_id_index ON photos (style_id);
-// CREATE INDEX product_id_index ON products (product_id);
-// CREATE INDEX style_id_index ON styles (style_id);
 // CREATE INDEX style_product_id_index ON styles (product_id);
-// CREATE INDEX sku_id_index ON skus (sku_id);
 // CREATE INDEX sku_style_id_index ON skus (style_id);
+// CREATE INDEX related_current_id_index ON related (currentproduct_id);
+// CREATE INDEX related_product_id_index ON related (related_product_id);
 
 const dbGetProducts = () => {
   return db.query(

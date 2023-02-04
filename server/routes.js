@@ -7,7 +7,6 @@ module.exports = {
   getProducts: (req, res) => {
     db.dbGetProducts()
     .then((result) => {
-      console.log('get products');
       res.status(200).send(result);
     })
     .catch((err) => {
@@ -17,7 +16,6 @@ module.exports = {
   getProductInfo: (req, res) => {
     db.dbGetProductInfo(req.params.product_id)
     .then((result) => {
-      console.log('get info');
       res.status(200).send(result);
     })
     .catch((err) => {
@@ -34,7 +32,6 @@ module.exports = {
       if (result.results === null) {
         result.results = [placeholderStyle];
       }
-      console.log('get styles');
       res.status(200).send(result);
     })
     .catch((err) => {
@@ -45,7 +42,6 @@ module.exports = {
   getRelatedProducts: (req, res) => {
     db.dbGetRelatedProducts(req.params.product_id)
     .then((result) => {
-      console.log('get related');
       res.status(200).send(result);
     })
     .catch((err) => {
@@ -55,7 +51,6 @@ module.exports = {
   getCart: (req, res) => {
     db.dbGetCart(req.sessionID)
     .then((result) => {
-      console.log('get cart');
       res.status(200).send(result);
     })
     .catch((err) => {
@@ -68,7 +63,6 @@ module.exports = {
     let count = req.body.count;
     db.dbAddToCart(session, skuID, count)
     .then((result) => {
-      console.log('post cart');
       res.sendStatus(201);
     })
     .catch((err) => {
