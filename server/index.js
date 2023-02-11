@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
 const route = require('./routes.js');
-// const db = require('../db/dbIndex.js');
+const db = require('../db/dbIndex.js');
 
 const app = express();
 app.use(express.json());
@@ -35,5 +35,5 @@ app.get('/cart', route.getCart);
 app.post('/cart', route.postCart);
 
 
-app.listen(8080);
-console.log('Listening at http://localhost:8080');
+app.listen(3000);
+console.log('Listening at http://localhost:3000');

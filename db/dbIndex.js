@@ -1,8 +1,12 @@
 const {Pool} = require('pg');
 
 const db = new Pool({
+  user: 'postgres',
+  host: process.env.HOST,
   database: process.env.DB_NAME,
-})
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
 
 db
   .connect()
@@ -81,16 +85,6 @@ db
 );`)
 .then(() => {/*console.log('TABLE "cart" created')*/})
 .catch((err) => {throw err})
-
-//Indexing
-
-
-// CREATE INDEX feature_product_id_index ON features (product_id);
-// CREATE INDEX photo_style_id_index ON photos (style_id);
-// CREATE INDEX style_product_id_index ON styles (product_id);
-// CREATE INDEX sku_style_id_index ON skus (style_id);
-// CREATE INDEX related_current_id_index ON related (currentproduct_id);
-// CREATE INDEX related_product_id_index ON related (related_product_id);
 
 const dbGetProducts = () => {
   return db.query(
