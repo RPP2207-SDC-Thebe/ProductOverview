@@ -14,7 +14,8 @@ app.use(session({
 }));
 
 
-
+//Loader.io verification
+app.get('/loaderio-61e814b3f9e868c1873bb9acc1dbded9.txt', route.verify);
 //Product overview Routes
 
 //GET/products (default parameters page and count is 1 and 5)

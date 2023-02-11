@@ -1,3 +1,4 @@
+const fs = require('fs');
 const db = require('../db/dbIndex.js');
 const placeholderStyle = require('../placeholderStyle.js').placeholderStyle;
 
@@ -67,6 +68,14 @@ module.exports = {
     })
     .catch((err) => {
       res.status(400).send(err);
+    })
+  },
+  verify: (req, res) => {
+    fs.readFile('./../loaderio-61e814b3f9e868c1873bb9acc1dbded9.txt', 'utf8', function (err, data) {
+      if (err) {
+        throw err
+      }
+      res.send(data);
     })
   }
 }
