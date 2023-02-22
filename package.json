@@ -5,7 +5,8 @@
   "main": "server/index.js",
   "scripts": {
     "test": "npx jest",
-    "server-dev": "npx nodemon --watch server index.js"
+    "server-dev": "npx nodemon --watch server index.js",
+    "server": "node server index.js"
   },
   "repository": {
     "type": "git",

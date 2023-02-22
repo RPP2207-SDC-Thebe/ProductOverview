@@ -15,7 +15,7 @@ app.use(session({
 
 
 //Loader.io verification
-app.get('/loaderio-951d15fbce2fbde474a10966a7ef72f5.txt', route.verify);
+app.get(`/${process.env.LOADERIO}.txt`, route.verify);
 //Product overview Routes
 
 //GET/products (default parameters page and count is 1 and 5)
