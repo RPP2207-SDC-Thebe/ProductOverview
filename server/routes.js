@@ -71,7 +71,7 @@ module.exports = {
     })
   },
   verify: (req, res) => {
-    fs.readFile(`./../${LOADERIO}.txt`, 'utf8', function (err, data) {
+    fs.readFile(`./../${process.env.LOADERIO}.txt`, 'utf8', function (err, data) {
       if (err) {
         throw err
       }
